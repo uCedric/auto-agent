@@ -13,4 +13,4 @@ use.load().then(model => {
       // So in this example `embeddings` has the shape [2, 512].
       embeddings.print(true /* verbose */);
     });
-  });
+  });//renew
