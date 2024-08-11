@@ -12,6 +12,7 @@ app.get("/health", (_req, res) => {
 
 
 app.use(successHandler);
+// TODO: Add error handler
 // app.use(errorHandler);
 app.use(router);
 
