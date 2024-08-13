@@ -25,3 +25,5 @@ const warmupPrompt = "teach me about how a embedding model works?";
 const startTime = Date.now();
 const warmupResponse = await session.prompt(warmupPrompt);
 const endTime = Date.now();
+
+console.log("Warmup response: ", warmupResponse);

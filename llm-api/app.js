@@ -6,14 +6,17 @@ const app = express();
 
 app.use(json());
 
-app.get("/health", (_req, res) => {
-    res.success("Server is running");
-});
+
 
 
 app.use(successHandler);
 // TODO: Add error handler
 // app.use(errorHandler);
+
+app.get("/health", (_req, res) => {
+    res.success("Server is running");
+});
+
 app.use(router);
 
 app.all("*", (req) => {

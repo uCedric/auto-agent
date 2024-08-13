@@ -1,5 +1,6 @@
 package com.example.api.services;
 
+import com.example.api.pojos.Prompt;
 import com.example.api.services.external.llmService;
 import com.example.api.utils.dataFormate;
 
@@ -10,13 +11,12 @@ import org.springframework.stereotype.Service;
 public class PromptService {
 
     @Async
-    public String query(String prompt) {
-        // TODO: external service call
-        // call llm api
+    public String query(Prompt prompt) {
         llmService llmService = new llmService();
-        String jasonfiedPrompt = dataFormate.jasonfy("prompt", prompt);
-        String result = llmService.query(jasonfiedPrompt);
+        String jasonfiedPrompt = dataFormate.jasonfy("prompt", prompt.toString());
+        String response = llmService.query(jasonfiedPrompt);
+        // db insert
 
-        return result;
+        return response;
     }
 }

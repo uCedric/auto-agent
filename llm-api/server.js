@@ -4,7 +4,7 @@ import { initializeLlm } from "./src/utils/llmInit.js";
 //import { initializeDB } from "./src/utils/utilsdbConn.js";
 
 const server = http.createServer(app);
-const port = 3000;
+const port = 8081;
 async function startServer(server, port){
     //initializeDB();
 

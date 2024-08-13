@@ -1,5 +1,7 @@
 package com.example.api.utils;
 
+import com.example.api.utils.constants;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -45,11 +47,11 @@ public class httpReqMaker {
     public HttpMethod getHttpMethod(String method) {
         if (method == "GET") {
             return HttpMethod.GET;
-        } else if (method == "POST") {
+        } else if (method == constants.HTTP_METHOD_POST) {
             return HttpMethod.POST;
-        } else if (method == "PUT") {
+        } else if (method == constants.HTTP_METHOD_PUT) {
             return HttpMethod.PUT;
-        } else if (method == "DELETE") {
+        } else if (method == constants.HTTP_METHOD_DELETE) {
             return HttpMethod.DELETE;
         } else {
             throw new IllegalArgumentException("Invalid method");

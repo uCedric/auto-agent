@@ -7,6 +7,6 @@ public class llmService {
         httpReqMaker httpReqMaker = new httpReqMaker();
         httpReqMaker.setBody(prompt);
 
-        return httpReqMaker.send("http://localhost:3000/spring-prompt/query", "POST");
+        return httpReqMaker.send("http://localhost:8081/spring-prompt/query", "POST");
     }
 }

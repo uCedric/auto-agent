@@ -22,7 +22,7 @@ public class PromptController {
         bodyValidator.validate(prompt);
         // 3. business logic
         PromptService promptService = new PromptService();
-        String response = promptService.query(prompt.getPrompt());
+        String response = promptService.query(prompt);
         // 4. response
         return response;
     }

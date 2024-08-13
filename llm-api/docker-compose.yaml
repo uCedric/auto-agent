@@ -1,18 +1,13 @@
 version: '3.8'
 
 services:
-  api-database:
+  db:
     image: postgres:13
     command: postgres -c max_connections=1000
-    container_name: api-db
+    container_name: llm-api-db
     environment:
       POSTGRES_DB: api
       POSTGRES_USER: user 
       POSTGRES_PASSWORD: example
     ports:
-      - "5432:5432"
-
-  redis:
-    image: redis:6.0.9
-    ports:
-      - "6379:6379"
+      - "5433:5433"

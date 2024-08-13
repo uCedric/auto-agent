@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ApiApplication {
 
 	public static void main(String[] args) {
-		System.out.println("server is running on port");
+		// TODO: initialize the db、redis connection
+
 		SpringApplication.run(ApiApplication.class, args);
 	}
 	// TODO: add external folder for the function that is responseble for connecting

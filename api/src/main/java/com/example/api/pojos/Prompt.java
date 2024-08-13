@@ -1,24 +1,26 @@
 package com.example.api.pojos;
 
+import com.example.api.utils.constants;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public class Prompt {
     private String id;
 
-    @NotEmpty(message = "userId is required")
-    @Size(min = 16, max = 16, message = "userId length must be 16")
+    @NotEmpty(message = constants.USERID_CAN_NOT_EMPTY)
+    @Size(min = 16, max = 16, message = constants.USERID_LENGTH_INVALID)
     private String userId;
-    @NotEmpty(message = "prompt is required")
-    @Size(min = 1, max = 512, message = "prompt length must be between 1 and 512")
-    private String prompt;
+    @NotEmpty(message = constants.PROMPT_CAN_NOT_EMPTY)
+    @Size(min = 1, max = 512, message = constants.PROMPT_LENGTH_INVALID)
+    private String content;
 
     public String getOwner() {
         return this.userId;
     }
 
-    public String getPrompt() {
-        return this.prompt;
+    public String toString() {
+        return this.content;
     }
 
     public void setId(String id) {
