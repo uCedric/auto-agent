@@ -2,15 +2,23 @@ version: '3.8'
 
 services:
   api-database:
-    image: postgres:13
+    image: postgis/postgis:12-3.4
     command: postgres -c max_connections=1000
     container_name: api-db
     environment:
       POSTGRES_DB: api
       POSTGRES_USER: user 
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
+
+  migrate:
+    image: migrate/migrate
+    command:
+        ["-path", "/src/main/resources/db/migrations", "-database", "postgresql://user:password@api-db:5432/api?sslmode=disable", "up"]
+    volumes:
+        - ./src/main/resources/db/migrations:/src/main/resources/db/migrations
+    restart: on-failure:9 # will start 1 time and retry 9 times
 
   redis:
     image: redis:6.0.9

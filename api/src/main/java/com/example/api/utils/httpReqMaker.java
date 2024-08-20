@@ -1,6 +1,7 @@
 package com.example.api.utils;
 
 import com.example.api.utils.constants;
+import com.example.api.dtos.llmReqDto;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,12 +35,12 @@ public class httpReqMaker {
         this.body = body;
     }
 
-    public String send(String url, String method) {
+    public llmReqDto send(String url, String method) {
         RestTemplate restTemplate = new RestTemplate();
         HttpMethod httpMethod = getHttpMethod(method);
 
         HttpEntity<String> entity = new HttpEntity<String>(body, httpHeader);
-        ResponseEntity<String> response = restTemplate.exchange(url, httpMethod, entity, String.class);
+        ResponseEntity<llmReqDto> response = restTemplate.exchange(url, httpMethod, entity, llmReqDto.class);
 
         return response.getBody();
     }
