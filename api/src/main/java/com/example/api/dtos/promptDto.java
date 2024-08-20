@@ -1,11 +1,12 @@
-package com.example.api.pojos;
+package com.example.api.dtos;
 
 import com.example.api.utils.constants;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-public class Prompt {
+public class promptDto {
     private String id;
 
     @NotEmpty(message = constants.USERID_CAN_NOT_EMPTY)
@@ -19,7 +20,7 @@ public class Prompt {
         return this.userId;
     }
 
-    public String toString() {
+    public String getContent() {
         return this.content;
     }
 
@@ -29,5 +30,9 @@ public class Prompt {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
