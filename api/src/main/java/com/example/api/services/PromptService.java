@@ -1,7 +1,7 @@
 package com.example.api.services;
 
 import com.example.api.dtos.dataDto;
-import com.example.api.dtos.llmReqDto;
+import com.example.api.dtos.llmResDto;
 import com.example.api.dtos.promptDto;
 import com.example.api.repository.PromptRepository;
 import com.example.api.services.external.llmService;
@@ -22,13 +22,13 @@ public class PromptService {
     private PromptRepository promptRepository;
 
     @Async("dbAsyncExecutor")
-    public CompletableFuture<llmReqDto> query(RequestMethod method, promptDto prompt) {
+    public CompletableFuture<llmResDto> query(RequestMethod method, promptDto prompt) {
         try {
             UUID uuid = UUID.fromString(prompt.getOwner());
             String jasonfiedPrompt = dataFormate.jasonfy("prompt", prompt.getContent());
 
             llmService llmService = new llmService();
-            llmReqDto llmRes = llmService.query(method, jasonfiedPrompt);
+            llmResDto llmRes = llmService.query(method, jasonfiedPrompt);
             System.out.println("llmRes: " + llmRes.getData().getResponse());
 
             // TODO: save response to db

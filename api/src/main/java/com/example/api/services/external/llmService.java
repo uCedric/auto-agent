@@ -2,12 +2,12 @@ package com.example.api.services.external;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.example.api.dtos.llmReqDto;
+import com.example.api.dtos.llmResDto;
 import com.example.api.utils.httpReqMaker;
 
 public class llmService {
 
-    public llmReqDto query(RequestMethod method, String prompt) {
+    public llmResDto query(RequestMethod method, String prompt) {
         httpReqMaker httpReqMaker = new httpReqMaker();
         httpReqMaker.setBody(prompt);
 

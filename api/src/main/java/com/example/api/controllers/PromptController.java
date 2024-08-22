@@ -2,9 +2,11 @@ package com.example.api.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.api.dtos.llmReqDto;
+import com.example.api.dtos.dataDto;
+import com.example.api.dtos.llmResDto;
 import com.example.api.dtos.promptDto;
 import com.example.api.services.PromptService;
+import com.example.api.utils.SuccessResponse;
 import com.example.api.validators.BodyValidator;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,15 +24,17 @@ public class PromptController {
     private PromptService promptService;
 
     @PostMapping("/query")
-    public llmReqDto query(@RequestBody promptDto prompt) throws Exception {
+    public SuccessResponse<dataDto> query(@RequestBody promptDto prompt) throws Exception {
 
         BodyValidator bodyValidator = new BodyValidator();
         bodyValidator.validate(prompt);
 
-        CompletableFuture<llmReqDto> response = promptService.query(RequestMethod.POST, prompt);
-        llmReqDto result = response.get();
+        CompletableFuture<llmResDto> response = promptService.query(RequestMethod.POST, prompt);
+        llmResDto result = response.get();
 
-        return result;
+        SuccessResponse<dataDto> successResponse = new SuccessResponse<>(200, "Success", result.getData());
+
+        return successResponse;
     }
 
     @PostMapping("/history")
