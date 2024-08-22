@@ -10,6 +10,8 @@ import com.example.api.utils.dataFormate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,13 +22,13 @@ public class PromptService {
     private PromptRepository promptRepository;
 
     @Async("dbAsyncExecutor")
-    public CompletableFuture<llmReqDto> query(promptDto prompt) {
+    public CompletableFuture<llmReqDto> query(RequestMethod method, promptDto prompt) {
         try {
             UUID uuid = UUID.fromString(prompt.getOwner());
             String jasonfiedPrompt = dataFormate.jasonfy("prompt", prompt.getContent());
 
             llmService llmService = new llmService();
-            llmReqDto llmRes = llmService.query(jasonfiedPrompt);
+            llmReqDto llmRes = llmService.query(method, jasonfiedPrompt);
             System.out.println("llmRes: " + llmRes.getData().getResponse());
 
             // TODO: save response to db
