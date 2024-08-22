@@ -25,7 +25,6 @@ public class PromptService {
             UUID uuid = UUID.fromString(prompt.getOwner());
             String jasonfiedPrompt = dataFormate.jasonfy("prompt", prompt.getContent());
 
-            // TODO: initialize llm connection and object
             llmService llmService = new llmService();
             llmReqDto llmRes = llmService.query(jasonfiedPrompt);
             System.out.println("llmRes: " + llmRes.getData().getResponse());

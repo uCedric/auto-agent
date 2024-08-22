@@ -13,6 +13,4 @@ public class ApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ApiApplication.class, args);
 	}
-	// TODO: add external folder for the function that is responseble for connecting
-	// to external sevice
 }
