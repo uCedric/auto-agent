@@ -25,6 +25,7 @@ public class PromptController {
 
     @PostMapping("/query")
     public SuccessResponse<dataDto> query(@RequestBody promptDto prompt) throws Exception {
+        // TODO: redis connection for auth
 
         BodyValidator bodyValidator = new BodyValidator();
         bodyValidator.validate(prompt);
