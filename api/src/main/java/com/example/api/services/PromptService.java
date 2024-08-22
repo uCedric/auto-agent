@@ -23,19 +23,20 @@ public class PromptService {
 
     @Async("dbAsyncExecutor")
     public CompletableFuture<llmResDto> query(RequestMethod method, promptDto prompt) {
-        try {
-            UUID uuid = UUID.fromString(prompt.getOwner());
-            String jasonfiedPrompt = dataFormate.jasonfy("prompt", prompt.getContent());
+        UUID uuid = UUID.randomUUID();
+        UUID userUuid = UUID.fromString(prompt.getOwner());
+        String jasonfiedPrompt = dataFormate.jasonfy("prompt", prompt.getContent());
 
-            llmService llmService = new llmService();
-            llmResDto llmRes = llmService.query(method, jasonfiedPrompt);
-            System.out.println("llmRes: " + llmRes.getData().getResponse());
+        llmService llmService = new llmService();
+        llmResDto llmRes = llmService.query(method, jasonfiedPrompt);
+        String content = llmRes.getData().getResponse();
 
-            // TODO: save response to db
+        int dbModifiedLine = promptRepository.addPrompt(uuid, userUuid, content);
 
-            return CompletableFuture.completedFuture(llmRes);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to query prompt:", e);
+        if (dbModifiedLine == 0) {
+            throw new RuntimeException("Failed to save prompt to db");
         }
+
+        return CompletableFuture.completedFuture(llmRes);
     }
 }

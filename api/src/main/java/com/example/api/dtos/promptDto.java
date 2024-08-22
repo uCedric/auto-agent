@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public class promptDto {
-    private String id;
-
     @NotEmpty(message = constants.USERID_CAN_NOT_EMPTY)
     @Size(min = 36, max = 36, message = constants.USERID_LENGTH_INVALID)
     private String userId;
@@ -21,10 +19,6 @@ public class promptDto {
 
     public String getContent() {
         return this.content;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public void setUserId(String userId) {
