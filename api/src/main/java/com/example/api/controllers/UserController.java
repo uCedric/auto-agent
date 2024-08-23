@@ -13,6 +13,7 @@ public class UserController {
 
     @GetMapping("/all")
     public String getUser(@RequestHeader("Authorization") String token) {
+        // TODO: develop auth exception class
         AuthValidator authValidator = new AuthValidator();
         authValidator.validateToken(token);
 
