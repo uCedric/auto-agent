@@ -7,10 +7,12 @@ import com.example.api.dtos.llmResDto;
 import com.example.api.dtos.promptDto;
 import com.example.api.services.PromptService;
 import com.example.api.utils.SuccessResponse;
+import com.example.api.validators.AuthValidator;
 import com.example.api.validators.BodyValidator;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,10 @@ public class PromptController {
     private PromptService promptService;
 
     @PostMapping("/query")
-    public SuccessResponse<dataDto> query(@RequestBody promptDto prompt) throws Exception {
-        // TODO: redis connection for auth
+    public SuccessResponse<dataDto> query(@RequestHeader("authorization") String token, @RequestBody promptDto prompt)
+            throws Exception {
+        AuthValidator authValidator = new AuthValidator();
+        authValidator.validateToken(token);
 
         BodyValidator bodyValidator = new BodyValidator();
         bodyValidator.validate(prompt);
