@@ -3,6 +3,8 @@ package com.example.api.validators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import com.example.api.utils.Exceptions.ForbiddenException;
+
 public class AuthValidator {
 
     @Autowired
@@ -10,11 +12,11 @@ public class AuthValidator {
 
     public void validateToken(String token) {
         if (isTokenEmpty(token))
-            throw new IllegalArgumentException("Token is empty");
+            throw new ForbiddenException("Token is empty");
         if (isTokenNotInJwtFormate(token))
-            throw new IllegalArgumentException("Token is not in JWT format");
+            throw new ForbiddenException("Token is not in JWT format");
         if (isTokenInvalid(token))
-            throw new IllegalArgumentException("Token is invalid");
+            throw new ForbiddenException("Token is invalid");
     }
 
     private boolean isTokenEmpty(String token) {

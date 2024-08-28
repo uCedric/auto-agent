@@ -3,6 +3,8 @@ package com.example.api.utils;
 import com.example.api.utils.constants;
 import com.example.api.dtos.llmResDto;
 
+import java.security.InvalidParameterException;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +57,7 @@ public class httpReqMaker {
         } else if (method == constants.HTTP_METHOD_DELETE) {
             return HttpMethod.DELETE;
         } else {
-            throw new IllegalArgumentException("Invalid method");
+            throw new InvalidParameterException("Invalid method");
         }
     }
 

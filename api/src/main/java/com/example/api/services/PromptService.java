@@ -6,6 +6,7 @@ import com.example.api.dtos.promptDto;
 import com.example.api.repository.PromptRepository;
 import com.example.api.services.external.llmService;
 import com.example.api.utils.dataFormate;
+import com.example.api.utils.Exceptions.InternalServerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -34,7 +35,7 @@ public class PromptService {
         int dbModifiedLine = promptRepository.addPrompt(uuid, userUuid, content);
 
         if (dbModifiedLine == 0) {
-            throw new RuntimeException("Failed to save prompt to db");
+            throw new InternalServerException("Failed to save prompt to db");
         }
 
         return CompletableFuture.completedFuture(llmRes);
