@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@RequestMapping("/prompt")
+@RequestMapping("/prompts")
 public class PromptController {
 
     @Autowired

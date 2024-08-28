@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.example.api.utils.Exceptions.DataFormateException;
+import org.springframework.stereotype.Component;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
+import jakarta.validation.Validator;
 
+import com.example.api.utils.Exceptions.InvalidParameterException;
+
+@Component
 public class BodyValidator {
 
     public void validate(Object object) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        jakarta.validation.Validator validator = validatorFactory.getValidator();
+        Validator validator = validatorFactory.getValidator();
         Set<ConstraintViolation<Object>> violations = validator.validate(object);
-        List<String> violationList = new ArrayList<String>();
 
-        // Will run for loop to see if there are any validation error
+        // will get violation list if violation exists
+        List<String> violationList = new ArrayList<String>();
         for (ConstraintViolation<Object> violation : violations) {
             System.out.println(violation.getPropertyPath() + ": " + violation.getMessage());
             violationList.add(violation.getMessage());
@@ -26,8 +30,7 @@ public class BodyValidator {
         }
 
         if (violationList.size() > 0) {
-            throw new DataFormateException(violationList.toString());
+            throw new InvalidParameterException(violationList.toString());
         }
-
     }
 }
