@@ -32,8 +32,6 @@ public class userService {
         int duplicatedUserCount = userRepository.searchUserByEmail(email);
 
         if (duplicatedUserCount > 0) {
-            // TODO: add exception
-            System.out.println("////////////////////////////////////////////////" + duplicatedUserCount);
             throw new InvalidParameterException("user existed.");
         }
 
@@ -43,6 +41,7 @@ public class userService {
     public Boolean addUser(signupDto signupDto) {
         UUID id = UUID.randomUUID();
 
+        // TODO: password encryption
         int effectedRow = userRepository.addUser(id, signupDto.getName(), signupDto.getEmail(),
                 signupDto.getPassword());
         if (effectedRow != 1)
