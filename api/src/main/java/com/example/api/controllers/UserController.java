@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.api.dtos.signupDto;
+import com.example.api.services.AuthService;
 import com.example.api.services.userService;
 import com.example.api.utils.AsyncProcessor;
+import com.example.api.utils.SuccessResponse;
 import com.example.api.validators.AuthValidator;
 import com.example.api.validators.BodyValidator;
 
@@ -28,19 +30,24 @@ public class UserController {
     @Autowired
     private userService userService;
 
+    @Autowired
+    private AuthService authService;
+
     @PostMapping("/signup")
-    public String signup(@RequestBody signupDto signupDto) throws InterruptedException, ExecutionException {
+    public SuccessResponse<String> signup(@RequestBody signupDto signupDto)
+            throws InterruptedException, ExecutionException {
         // validate body
         bodyValidator.validate(signupDto);
         AsyncProcessor.<signupDto, Boolean>init()
                 .addTask(userService::signup, signupDto)
                 .process().get();
 
-        // generate token
+        String token = authService.userSignupToken(signupDto);
+        // TODO: add token to redis
 
-        // add token to redis
-        // return token
-        return "Hello User!1";
+        SuccessResponse<String> response = new SuccessResponse<>(200, "User signed up successfully", token);
+
+        return response;
 
     }
 
