@@ -16,6 +16,7 @@ import com.example.api.dtos.signupDto;
 import com.example.api.services.AuthService;
 import com.example.api.services.userService;
 import com.example.api.utils.AsyncProcessor;
+import com.example.api.utils.SuccessResponse;
 import com.example.api.validators.AuthValidator;
 import com.example.api.validators.BodyValidator;
 
@@ -33,18 +34,20 @@ public class UserController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody signupDto signupDto) throws InterruptedException, ExecutionException {
+    public SuccessResponse<String> signup(@RequestBody signupDto signupDto)
+            throws InterruptedException, ExecutionException {
         // validate body
         bodyValidator.validate(signupDto);
-        // AsyncProcessor.<signupDto, Boolean>init()
-        // .addTask(userService::signup, signupDto)
-        // .process().get();
+        AsyncProcessor.<signupDto, Boolean>init()
+                .addTask(userService::signup, signupDto)
+                .process().get();
 
-        // generate token
         String token = authService.userSignupToken(signupDto);
-        // add token to redis
-        // return token
-        return token;
+        // TODO: add token to redis
+
+        SuccessResponse<String> response = new SuccessResponse<>(200, "User signed up successfully", token);
+
+        return response;
 
     }
 
