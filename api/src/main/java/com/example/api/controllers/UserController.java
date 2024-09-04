@@ -1,8 +1,8 @@
 package com.example.api.controllers;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.api.dtos.signupDto;
+import com.example.api.dtos.tokenDto;
 import com.example.api.services.AuthService;
 import com.example.api.services.userService;
 import com.example.api.utils.AsyncProcessor;
@@ -34,18 +35,19 @@ public class UserController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public SuccessResponse<String> signup(@RequestBody signupDto signupDto)
+    public SuccessResponse<Map<String, String>> signup(@RequestBody signupDto signupDto)
             throws InterruptedException, ExecutionException {
-        // validate body
+
         bodyValidator.validate(signupDto);
-        AsyncProcessor.<signupDto, Boolean>init()
+
+        Map<String, String> results = AsyncProcessor.<signupDto, String>init()
                 .addTask(userService::signup, signupDto)
+                .addTask(authService::userSignupToken, signupDto)
                 .process().get();
 
-        String token = authService.userSignupToken(signupDto);
-        // TODO: add token to redis
-
-        SuccessResponse<String> response = new SuccessResponse<>(200, "User signed up successfully", token);
+        String token = results.get("task2");
+        SuccessResponse<Map<String, String>> response = new SuccessResponse<>(200, "User signed up successfully",
+                new tokenDto(token).getToken());
 
         return response;
 

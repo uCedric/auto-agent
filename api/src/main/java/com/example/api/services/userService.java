@@ -20,12 +20,12 @@ public class userService {
     private UserRepository userRepository;
 
     @Async("dbAsyncExecutor")
-    public CompletableFuture<Boolean> signup(signupDto signupDto)
+    public CompletableFuture<String> signup(signupDto signupDto)
             throws InvalidParameterException, InternalServerException {
         isEmailDuplicated(signupDto.getEmail());
         addUser(signupDto);
 
-        return CompletableFuture.completedFuture(true);
+        return CompletableFuture.completedFuture(null);
     }
 
     public Boolean isEmailDuplicated(String email) {
