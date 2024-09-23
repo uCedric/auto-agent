@@ -14,7 +14,7 @@ class llm {
             // get the models directory
             const __filename = fileURLToPath(import.meta.url);
             const __dirname = path.dirname(__filename);
-            const modelsDirectory = path.join(__dirname, "../../utils");
+            const modelsDirectory = path.join(__dirname, "./models");
             const modelsPath = path.join(modelsDirectory, MODEL_NAME);
             
             const model = new LlamaModel({
