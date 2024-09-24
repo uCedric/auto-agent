@@ -16,11 +16,14 @@ import jakarta.transaction.Transactional;
 public interface UserRepository extends JpaRepository<userEntity, UUID> {
 
     @Query(value = "SELECT COUNT(email) FROM users WHERE email = :email", nativeQuery = true)
-    int searchUserByEmail(@Param("email") String email);
+    int searchUserCountByEmail(@Param("email") String email);
 
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO users (id, name, email, password) VALUES (:id, :name, :email, :password)", nativeQuery = true)
     int addUser(@Param("id") UUID id, @Param("name") String name, @Param("email") String email,
             @Param("password") String password);
+
+    @Query(value = "SELECT password FROM users WHERE email = :email", nativeQuery = true)
+    String getUserPasswordByEmail(@Param("email") String email);
 }
