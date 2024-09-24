@@ -1,7 +1,5 @@
 package com.example.api.dtos;
 
-import com.example.api.dtos.dataDto;
-
 public class llmResDto {
     private int statusCode;
     private String message;

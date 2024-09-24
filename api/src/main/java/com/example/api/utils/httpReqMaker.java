@@ -1,6 +1,5 @@
 package com.example.api.utils;
 
-import com.example.api.utils.constants;
 import com.example.api.dtos.llmResDto;
 
 import java.security.InvalidParameterException;

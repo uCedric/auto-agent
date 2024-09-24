@@ -11,10 +11,6 @@ public class signupDto extends userDto {
     @Size(min = 1, max = 30, message = constants.USER_NAME_LENGTH_INVALID)
     private String name;
 
-    private String email;
-
-    private String password;
-
     public signupDto(String name, String email, String password) {
         super(email, password);
         this.name = name;
