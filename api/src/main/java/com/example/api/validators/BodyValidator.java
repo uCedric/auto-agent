@@ -16,12 +16,12 @@ import com.example.api.utils.Exceptions.InvalidParameterException;
 @Component
 public class BodyValidator {
 
+    /* validate annotation must in root attribute of the class */
     public void validate(Object object) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
         Set<ConstraintViolation<Object>> violations = validator.validate(object);
 
-        // will get violation list if violation exists
         List<String> violationList = new ArrayList<String>();
         for (ConstraintViolation<Object> violation : violations) {
             System.out.println(violation.getPropertyPath() + ": " + violation.getMessage());
