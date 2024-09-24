@@ -55,8 +55,7 @@ public class UserService {
     public CompletableFuture<String> login(userDto loginDto)
             throws InvalidParameterException, InternalServerException {
         String dbPassword = userRepository.getUserPasswordByEmail(loginDto.getEmail());
-        System.out.println(dbPassword);
-        System.out.println(loginDto.getPassword());
+
         if (!loginDto.getPassword().equals(dbPassword)) {
             throw new InvalidParameterException("invalid password.");
         }
