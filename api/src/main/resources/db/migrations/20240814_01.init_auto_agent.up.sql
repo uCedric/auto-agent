@@ -14,3 +14,5 @@ CREATE TABLE IF NOT EXISTS prompts (
     user_uuid UUID NOT NULL,
     content TEXT NOT NULL
 );
+
+INSERT INTO users (id, name, email, password) VALUES ('7c55f4b1-f69d-428f-9aa6-394b06851f45', 'index', 'example@gmail.com', 'password');
