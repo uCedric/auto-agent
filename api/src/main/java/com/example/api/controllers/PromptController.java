@@ -18,6 +18,8 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import io.jsonwebtoken.Claims;
+
 @RestController
 @RequestMapping("/prompts")
 public class PromptController {
@@ -25,13 +27,17 @@ public class PromptController {
     @Autowired
     private PromptService promptService;
 
+    @Autowired
+    private AuthValidator authValidator;
+
+    @Autowired
+    private BodyValidator bodyValidator;
+
     @PostMapping("/query")
     public SuccessResponse<dataDto> query(@RequestHeader("authorization") String token, @RequestBody promptDto prompt)
             throws Exception {
-        AuthValidator authValidator = new AuthValidator();
-        authValidator.validateToken(token);
-
-        BodyValidator bodyValidator = new BodyValidator();
+        Claims tokenContent = authValidator.validateToken(token);
+        // tokenContent.get("role", String.class);
         bodyValidator.validate(prompt);
 
         CompletableFuture<llmResDto> response = promptService.query(RequestMethod.POST, prompt);

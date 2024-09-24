@@ -17,6 +17,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import com.example.api.dtos.userDto;
+import com.example.api.utils.Exceptions.ForbiddenException;
 
 @Component
 public class JwtUtils {
@@ -46,16 +47,22 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String isValidToken(String token) {
-        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    public Claims isValidToken(String token) {
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
 
-        // Parse the token and validate the signature
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+            // Parse the token and validate the signature
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
 
-        return claims.getSubject();
+            return claims;
+
+        } catch (Exception e) {
+            throw new ForbiddenException("Token is invalid");
+        }
+
     }
 }

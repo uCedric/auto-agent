@@ -24,8 +24,4 @@ public class AuthService {
 
         return CompletableFuture.completedFuture(token);
     }
-
-    public String isValidToken(String token) {
-        return jwtUtils.isValidToken(token);
-    }
 }
