@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.CompletableFuture;
 
-import com.example.api.dtos.signupDto;
+import com.example.api.dtos.userDto;
 import com.example.api.utils.JwtUtils;
 import com.example.api.utils.RedisUtils;
 
@@ -17,10 +17,10 @@ public class AuthService {
     @Autowired
     private RedisUtils redisUtils;
 
-    public CompletableFuture<String> userSignupToken(signupDto signupDto) {
-        String token = jwtUtils.generateToken(signupDto);
+    public CompletableFuture<String> userSignupToken(userDto dto) {
+        String token = jwtUtils.generateToken(dto);
 
-        redisUtils.add(signupDto.getEmail(), token);
+        redisUtils.add(dto.getEmail(), token);
 
         return CompletableFuture.completedFuture(token);
     }

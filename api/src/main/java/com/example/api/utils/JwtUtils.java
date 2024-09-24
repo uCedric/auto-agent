@@ -16,7 +16,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-import com.example.api.dtos.signupDto;
+import com.example.api.dtos.userDto;
 
 @Component
 public class JwtUtils {
@@ -26,10 +26,10 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(signupDto signupDto) {
+    public String generateToken(userDto userDto) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("name", signupDto.getName());
-        claims.put("email", signupDto.getEmail());
+        claims.put("name", userDto.getName());
+        claims.put("email", userDto.getEmail());
         claims.put("role", "user");
 
         return Jwts
