@@ -1,6 +1,12 @@
 version: '3.8'
 
 services:
+  # llm-api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile #build a image from the Dockerfile in the current directory
+  #   ports:
+  #     - "8081:8081"
   db:
     image: postgres:13
     command: postgres -c max_connections=1000

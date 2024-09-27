@@ -8,5 +8,4 @@ WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY ["package.json", "server.js", "app.js", "./"]
 COPY src src
-COPY utils utils
 ENTRYPOINT ["npm", "start"]
