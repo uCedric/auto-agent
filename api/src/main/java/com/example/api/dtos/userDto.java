@@ -2,7 +2,7 @@ package com.example.api.dtos;
 
 import com.example.api.utils.constants;
 
-import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
 public class userDto {
     @NotEmpty(message = constants.USER_EMAIL_CAN_NOT_EMPTY)
     @NotBlank(message = constants.USER_EMAIL_CAN_NOT_CONTAIN_BLANK)
-    @Email(message = constants.USER_EMAIL_INVALID_FORMATE)
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = constants.USER_EMAIL_INVALID_FORMATE)
     private String email;
 
     @NotEmpty(message = constants.USER_PASSWORD_CAN_NOT_EMPTY)
