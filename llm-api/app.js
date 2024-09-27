@@ -6,9 +6,6 @@ const app = express();
 
 app.use(json());
 
-
-
-
 app.use(successHandler);
 // TODO: Add error handler
 // app.use(errorHandler);
