@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS sentences_vector;
+
+DROP EXTENSION IF EXISTS vector;
