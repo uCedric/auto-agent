@@ -1,7 +1,12 @@
-const promptQuery = async (prompt) => {
-    const promptRes = await global.llmInstance.inference(prompt);
+import llmConn from '../utils/llmInit.js';
+async function* promptQuery({prompt}) {
+    const llmInstance = await llmConn.getInstance({model: 'gemma2:2b'});
+    const promptRes = llmInstance.inference({prompt});
 
-    return promptRes;
-};
+    for await (const part of promptRes) {
+        process.stdout.write(part);
+        yield part;
+    }
+}
 
 export default { promptQuery };

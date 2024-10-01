@@ -17,7 +17,7 @@ services:
   #   ports:
   #     - "8080:8080"
   api-database:
-    image: postgis/postgis:12-3.4
+    image: ankane/pgvector:latest #postgis/postgis:12-3.4
     command: postgres -c max_connections=1000
     container_name: api-db
     environment:
