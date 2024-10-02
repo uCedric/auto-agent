@@ -4,13 +4,17 @@ import chunkModel from "../models/chunkModel.js";
 const embedChunks = async (chunks) => {
     const embedInstance = await embedConn.getInstance();
 
-    const vectors = await embedInstance.embedToVector(chunks);
-
-    for(let vector of vectors){
-        await chunkModel.addChunk({vector});
+    let embededObjects = [];
+    for(let chunk of chunks){
+        const vector = await embedInstance.embedToVector(chunk);
+        embededObjects = [...embededObjects, {vector: vector.embedding, chunk}];
     }
     
-    return vectors;
+    for(let object of embededObjects){
+        await chunkModel.addChunk(object.vector, object.chunk);
+    }
+    
+    return embededObjects;
 };
 
 export default { embedChunks };

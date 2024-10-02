@@ -9,8 +9,8 @@ const port = 8081;
 async function startServer(server, port){
     initializeDB();
 
-    await initializeLlm({model: 'gemma2:2b'});
-    //await initializeEmbed();
+    await initializeLlm("gemma2:2b");
+    await initializeEmbed("nomic-embed-text:latest");
     /*
     To prevent loss the request data or status we need to handle while server is shutting down.
     graceful shutdown
