@@ -1,33 +1,50 @@
-import '@tensorflow/tfjs';
-import * as use from '@tensorflow-models/universal-sentence-encoder';
-//import tfjs-node or tfjs-node-gpu is considerable
+import ollama from 'ollama';
+import axios from 'axios';
 
 class Embed {
-    constructor(model){
-        this.model = model;
+    ollamaInstance;
+    model;
+
+    constructor(embed){
+        this.ollamaInstance = ollama;
+        this.embed = embed;
     };
 
-    static async init(){
-        const model= await use.load();
-
-        const instance = new Embed(model);
-
-        return instance;
+    async embedToVector(chunk){
+        return await this.ollamaInstance.embeddings({ model: 'nomic-embed-text', prompt: chunk });
     }
 
-    async embedToVector(chunks){
-        const vectors = await this.model.embed(chunks).then(embeddings => embeddings.arraySync());
-        
-        return vectors;
+    static async init(embed){
+        try{
+            if(!await Embed.isConnected())throw new Error('Ollama is not connected');
+            if(!await Embed.isModelExist(embed))throw new Error('embeding model does not exist');
+    
+            return new Embed(embed);
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+
+    static async isConnected(){
+        return (await axios.get('http://127.0.0.1:11434/')).status === 200;
+    }
+
+    static async isModelExist(embed){
+        const {models: modelList} = await ollama.list();
+
+        for(let modelItem of modelList){
+            if(modelItem.name === embed)return true;
+        }
+
+        return false;
     }
 }
 
 export default class embedSingleton {
 
-    static async getInstance(){
+    static async getInstance(embed){
         if(!embedSingleton.instance){
-            console.log("embedSingleton instance is not created yet");
-            embedSingleton.instance = await Embed.init();
+            embedSingleton.instance = await Embed.init(embed);
             console.log("embedSingleton instance is created");
         }
 
@@ -35,4 +52,4 @@ export default class embedSingleton {
     }
 }
 
-export const initializeEmbed = async () => embedSingleton.getInstance();
+export const initializeEmbed = async (embed) => embedSingleton.getInstance(embed);

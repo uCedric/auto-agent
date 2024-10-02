@@ -3,56 +3,65 @@ import axios from 'axios';
 
 class llm{
     ollamaInstance;
+    model;
 
-    constructor({model}) {
+    constructor(model) {
         this.ollamaInstance = ollama;
-
-        ollama.pull({model});
+        this.model = model;
+        console.log('llm instance is created');
     }
 
     async *inference({prompt}){
         const message  = {role: 'user', content: prompt};
 
-        const result = await this.ollamaInstance.chat({model: 'gemma2:2b', messages: [message], stream: true});
+        const result = await this.ollamaInstance.chat({model: this.model, messages: [message], stream: true});
 
         for await (const part of result) {
             yield part.message.content;
         }
     }
 
-    static async init({model}){
-        if(!llm.ollamaInstance){
-            try {
-                const response = await axios.get('http://127.0.0.1:11434/');
-                if (response.status === 200) {
-                    const llmInstance =  new llm({model});
-                    console.log('Ollama is running!');
-                    return llmInstance;
-                } else {
-                    console.log('Ollama is not responding as expected.');
-                }
-            } catch (error) {
-                console.error('Error connecting to Ollama:', error.message);
-            }
+    static async init(model){
+        try {
+            if(!await llm.isConnected())throw new Error('Ollama is not connected');
+            if(!await llm.isModelExist(model))throw new Error('llm model does not exist');
+
+            return new llm(model); 
+        } catch (error) {
+            console.log(error.message);
         }
     }
-}
 
+    static async isConnected(){
+        return (await axios.get('http://127.0.0.1:11434/')).status === 200;
+    }
+
+    static async isModelExist(model){
+        const {models: modelList} = await ollama.list();
+
+        for(let modelItem of modelList){
+            if(modelItem.name === model)return true;
+        }
+
+        return false;
+    }
+}
+ 
 export default class llmSingleton{
-    static async getInstance({model}){
+    static async getInstance(model){
         if(llmSingleton.instance)console.log('llmSingleton instance is serving');
 
         if(!llmSingleton.instance){
-            llmSingleton.instance = await llm.init({model});
+            llmSingleton.instance = await llm.init(model);
         }
 
         return llmSingleton.instance; 
     }
 }
 
-export const initializeLlm = async ({model}) => await llmSingleton.getInstance({model});
+export const initializeLlm = async (model) => await llmSingleton.getInstance(model);
 // import {fileURLToPath} from "url";
-// import path from "path";
+// import path from "path"; 
 // import {LlamaModel, LlamaContext, LlamaChatSession} from "node-llama-cpp";
 
 // class llm {
