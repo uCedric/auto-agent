@@ -18,8 +18,11 @@
     "cmake-js": "^7.3.0",
     "config": "3.3.12",
     "express": "4.19.2",
+    "lodash-es": "^4.17.21",
     "node-llama-cpp": "2.8.15",
     "nodemon": "3.1.4",
-    "pg": "8.12.0"
+    "ollama": "^0.5.9",
+    "pg": "8.12.0",
+    "pgvector": "^0.2.0"
   }
 }

@@ -1,14 +1,16 @@
 import config from "config";
 
+import isEmpty from "lodash-es/isEmpty.js";
+
 import pg from "pg";
 const { Pool } = pg;
 
-const POSTGRES_CONNECTION_INFO = config.get("data.postgres");
-const host = POSTGRES_CONNECTION_INFO.host || "127.0.0.1";
-const port = POSTGRES_CONNECTION_INFO.port || "8000";
-const user = POSTGRES_CONNECTION_INFO.user || "user";
-const password = POSTGRES_CONNECTION_INFO.password || "password";
-const name = POSTGRES_CONNECTION_INFO.name || "as-db";
+const host = "172.17.117.139";
+const connectionString = "postgres://user:password@172.17.117.139:5432/api";
+const port = "5432";
+const user = "user";
+const password = "password";
+const name = "api";
 
 //listener to monitor connection status
 const PG_POOL_EVENTS = {
@@ -25,11 +27,11 @@ const PG_CLIENT_EVENTS = {
 };
 
 //cedric: config.get...
-const RETRY_IN_MILLISEC = POSTGRES_CONNECTION_INFO.retry || 1000;
+const RETRY_IN_MILLISEC = 1000;
 
 class DB {
-   constructor({ host, port, user, password, name } = {}) {
-        this.pool = new Pool({host, port, user, password, name});
+   constructor({ host, connectionString, port, user, password, name } = {}) {
+        this.pool = new Pool({host, connectionString, port, user, password, name});
 
         this.pool
                 .on(PG_POOL_EVENTS.CONNECT, (client) => {
@@ -58,14 +60,17 @@ class DB {
    }
 
    async query(sql, value = null){
+        let client;
         try{
-            const client = await this.buildConnection();
+            client = await this.buildConnection();
             return isEmpty(value) ? await client.query(sql) : await client.query(sql, value);
         }catch(error){
             console.log(`[db] query fail: `, error);
         }finally{
-            client.release();
-            console.info("[db] query close")
+            if (client) {
+                client.release();
+                console.info("[db] query close")
+            }
         }
    };
 
@@ -88,9 +93,10 @@ export default class DatabaseSingleton{
         console.log("Use DatabaseSingleton.getInstance() instead of new DatabaseSingleton()");
     }
 
-    static getInstance({ host, port, user, password, name } = {}){
+    static getInstance({ host, connectionString, port, user, password, name } = {}){
         if(!DatabaseSingleton.instance){
-            DatabaseSingleton.instance = new DB({ host, port, user, password, name });
+            DatabaseSingleton.instance = new DB({ host, connectionString, port, user, password, name });
+            
             console.info("DB connection singleton is created");
         }
 
@@ -98,4 +104,4 @@ export default class DatabaseSingleton{
     }
 };
 
-export const initializeDB = () => DatabaseSingleton.getInstance({ host, port, user, password, name });
+export const initializeDB = () => DatabaseSingleton.getInstance({ host, connectionString, port, user, password, name });

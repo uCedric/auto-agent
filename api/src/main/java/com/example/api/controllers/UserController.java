@@ -85,4 +85,9 @@ public class UserController {
                 return "Hello User!";
         }
 
+        @GetMapping("/health")
+        public String health() {
+                return "API is up and running!";
+        }
+
 }

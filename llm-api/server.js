@@ -1,15 +1,16 @@
 import app from "./app.js";
 import http from "http";
 import { initializeLlm } from "./src/utils/llmInit.js";
-//import { initializeDB } from "./src/utils/utilsdbConn.js";
+import { initializeEmbed } from "./src/utils/embedInit.js";
+import { initializeDB } from "./src/utils/dbConn.js";
 
 const server = http.createServer(app);
 const port = 8081;
 async function startServer(server, port){
-    //initializeDB();
+    initializeDB();
 
-    global.llmInstance = initializeLlm();
-
+    await initializeLlm("gemma2:2b");
+    await initializeEmbed("nomic-embed-text:latest");
     /*
     To prevent loss the request data or status we need to handle while server is shutting down.
     graceful shutdown
