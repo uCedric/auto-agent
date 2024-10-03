@@ -14,13 +14,8 @@ public class AuthService {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @Autowired
-    private RedisUtils redisUtils;
-
     public CompletableFuture<String> userSignupToken(userDto dto) {
         String token = jwtUtils.generateToken(dto);
-
-        redisUtils.add(dto.getEmail(), token);
 
         return CompletableFuture.completedFuture(token);
     }

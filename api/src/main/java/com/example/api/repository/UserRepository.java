@@ -1,6 +1,6 @@
 package com.example.api.repository;
 
-import java.util.UUID;
+import com.example.api.entity.userEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -8,8 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.query.Param;
 
-import com.example.api.entity.userEntity;
-
+import java.util.UUID;
 import jakarta.transaction.Transactional;
 
 @Repository
@@ -26,4 +25,7 @@ public interface UserRepository extends JpaRepository<userEntity, UUID> {
 
     @Query(value = "SELECT password FROM users WHERE email = :email", nativeQuery = true)
     String getUserPasswordByEmail(@Param("email") String email);
+
+    @Query(value = "SELECT uuid FROM users WHERE email = :email", nativeQuery = true)
+    UUID getUuidByEmail(@Param("email") String email);
 }
