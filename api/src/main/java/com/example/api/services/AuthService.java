@@ -6,7 +6,6 @@ import java.util.concurrent.CompletableFuture;
 
 import com.example.api.dtos.userDto;
 import com.example.api.utils.JwtUtils;
-import com.example.api.utils.RedisUtils;
 
 @Service
 public class AuthService {
