@@ -1,17 +1,16 @@
 package com.example.api.services;
 
-import java.util.concurrent.CompletableFuture;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 import com.example.api.dtos.userDto;
 import com.example.api.repository.UserRepository;
 import com.example.api.utils.Exceptions.InternalServerException;
 import com.example.api.utils.Exceptions.InvalidParameterException;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.UUID;
 
 @Service
 public class UserService {

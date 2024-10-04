@@ -11,6 +11,11 @@ public class SuccessResponse<T> {
         this.data = data;
     }
 
+    public SuccessResponse(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
+
     public int getStatusCode() {
         return this.statusCode;
     }
