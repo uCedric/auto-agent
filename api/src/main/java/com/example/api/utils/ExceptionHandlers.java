@@ -9,10 +9,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.api.utils.Exceptions.InternalServerException;
 import com.example.api.utils.Exceptions.InvalidParameterException;
+import com.example.api.utils.Exceptions.ExternalServerException;
 import com.example.api.utils.Exceptions.ForbiddenException;
 
 @ControllerAdvice
 public class ExceptionHandlers {
+
+    @ExceptionHandler(ExternalServerException.class)
+    public ResponseEntity<ErrorResponse> handleExternalServerException(ExternalServerException error) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), error.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
 
     @ExceptionHandler(InvalidParameterException.class)
     public ResponseEntity<ErrorResponse> handleDataFormateException(InvalidParameterException error) {
