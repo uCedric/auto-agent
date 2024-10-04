@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 
 import java.util.concurrent.CompletableFuture;
 import io.jsonwebtoken.Claims;
@@ -36,7 +35,7 @@ public class PromptController {
         Claims tokenContent = authValidator.validateToken(token);
         bodyValidator.validate(prompt);
 
-        CompletableFuture<Flux<String>> result = promptService.query(HttpMethod.POST, prompt, tokenContent);
+        CompletableFuture<Flux<String>> result = promptService.query(prompt, tokenContent);
 
         return result;
     }
