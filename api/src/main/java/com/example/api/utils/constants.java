@@ -4,6 +4,7 @@ public class constants {
 
     // external service API
     public static final String LLM_API_LOCAL_QUERY = "http://localhost:8081/spring-prompt/query";
+    public static final String LLM_API_LOCAL_ADDCHUNKS = "http://localhost:8081/spring-prompt/chunks";
 
     // HTTP methods
     public static final String HTTP_METHOD_GET = "GET";

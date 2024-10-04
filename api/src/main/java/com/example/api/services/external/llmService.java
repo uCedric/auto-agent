@@ -1,13 +1,15 @@
 package com.example.api.services.external;
 
+import com.example.api.dtos.chunksDto;
 import com.example.api.dtos.promptDto;
 import com.example.api.utils.constants;
+import com.example.api.utils.Exceptions.InternalServerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import java.util.List;
 
 @Service
 public class llmService {
@@ -26,5 +28,25 @@ public class llmService {
                 });
 
         return streamData;
+    }
+
+    public String addChunks(List<String> chunks) {
+        WebClient webClient = webClientBuilder.build();
+
+        chunksDto chunksDto = new chunksDto(chunks);
+
+        String result = "";
+        try {
+            result = webClient.post().uri(constants.LLM_API_LOCAL_ADDCHUNKS)
+                    .header("Content-Type", "application/json")
+                    .bodyValue(chunksDto)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (Exception e) {
+            throw new InternalServerException("upload file faild");
+        }
+
+        return result;
     }
 }
