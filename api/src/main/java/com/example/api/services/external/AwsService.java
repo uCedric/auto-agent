@@ -40,18 +40,15 @@ public class AwsService {
                 .build();
     }
 
-    public void uploadFile(String userEmail, MultipartFile[] files) {
+    public void uploadFile(String s3Path, MultipartFile file) {
         try {
-            for (MultipartFile file : files) {
-                String fileKey = userEmail + "/" + file.getOriginalFilename();
 
-                PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                        .bucket(bucket)
-                        .key(fileKey)
-                        .build();
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucket)
+                    .key(s3Path)
+                    .build();
 
-                s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
-            }
+            s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
         } catch (S3Exception error) {
             throw new ExternalServerException("s3 bucket error: " + error);
         } catch (IOException error) {

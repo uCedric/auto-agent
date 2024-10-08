@@ -1,7 +1,7 @@
 import embedConn from "../utils/embedInit.js";
 import chunkModel from "../models/chunkModel.js";
 
-const embedChunks = async (chunks) => {
+const embedChunks = async (documentUuid, chunks) => {
     const embedInstance = await embedConn.getInstance();
 
     let embededObjects = [];
@@ -11,7 +11,7 @@ const embedChunks = async (chunks) => {
     }
     
     for(let object of embededObjects){
-        await chunkModel.addChunk(object.vector, object.chunk);
+        await chunkModel.addChunk(documentUuid, object.vector, object.chunk);
     }
     
     return embededObjects;

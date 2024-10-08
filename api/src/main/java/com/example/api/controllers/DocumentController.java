@@ -1,6 +1,8 @@
 package com.example.api.controllers;
 
+import com.example.api.dtos.userDto;
 import com.example.api.services.DocumentService;
+import com.example.api.utils.AsyncProcessor;
 import com.example.api.utils.SuccessResponse;
 import com.example.api.validators.AuthValidator;
 import com.example.api.validators.BodyValidator;
@@ -33,11 +35,12 @@ public class DocumentController {
     public SuccessResponse<Map<String, String>> uploadChunks(@RequestHeader("Authorization") String token,
             @RequestParam MultipartFile[] files, HttpServletResponse response)
             throws InterruptedException, ExecutionException {
+
         authValidator.validateToken(token, response);
 
         bodyValidator.multipartValidate(files);
 
-        documentService.addDocuments(response.getHeader("userUuid"), files);
+        documentService.addDocuments(response.getHeader("userUuid"), files).get();
 
         return new SuccessResponse<>(200, "Successfully uploaded documents");
     }
