@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class llmService {
@@ -30,10 +31,10 @@ public class llmService {
         return streamData;
     }
 
-    public String addChunks(List<String> chunks) {
+    public String addChunks(UUID documentUuid, List<String> chunks) {
         WebClient webClient = webClientBuilder.build();
 
-        chunksDto chunksDto = new chunksDto(chunks);
+        chunksDto chunksDto = new chunksDto(documentUuid, chunks);
 
         String result = "";
         try {
@@ -43,6 +44,7 @@ public class llmService {
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
+
         } catch (Exception e) {
             throw new InternalServerException("upload file faild");
         }

@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS  users (
 
 CREATE TABLE IF NOT EXISTS prompts (
     uuid UUID PRIMARY KEY,
-    user_uuid UUID NOT NULL,
+    user_uuid UUID NOT NULL CONSTRAINT fk_user_uuid REFERENCES users(uuid),
     content TEXT NOT NULL
 );
 
