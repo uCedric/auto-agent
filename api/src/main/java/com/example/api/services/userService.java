@@ -1,6 +1,5 @@
 package com.example.api.services;
 
-import com.example.api.dtos.userDto;
 import com.example.api.repository.UserRepository;
 import com.example.api.utils.Exceptions.InternalServerException;
 import com.example.api.utils.Exceptions.InvalidParameterException;

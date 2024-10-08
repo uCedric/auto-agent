@@ -3,7 +3,6 @@ package com.example.api.controllers;
 import com.example.api.dtos.signupDto;
 import com.example.api.dtos.tokenDto;
 import com.example.api.dtos.loginDto;
-import com.example.api.dtos.userDto;
 import com.example.api.dtos.Dto;
 import com.example.api.services.AuthService;
 import com.example.api.services.UserService;
