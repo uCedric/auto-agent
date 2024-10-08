@@ -30,6 +30,7 @@ public class DocumentService {
 
         String result = llmService.addChunks(chunks);
         awsService.uploadFile(userEmail, files);
+        // TODO: add document to db
 
         return CompletableFuture.completedFuture(result);
     }

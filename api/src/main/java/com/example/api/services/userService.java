@@ -1,14 +1,14 @@
 package com.example.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import com.example.api.dtos.userDto;
 import com.example.api.repository.UserRepository;
 import com.example.api.utils.Exceptions.InternalServerException;
 import com.example.api.utils.Exceptions.InvalidParameterException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import java.util.concurrent.CompletableFuture;
 import java.util.UUID;
 
@@ -41,9 +41,10 @@ public class UserService {
     public Boolean addUser(userDto signupDto) {
         UUID id = UUID.randomUUID();
 
-        // TODO: password encryption
+        String hashedPassword = new BCryptPasswordEncoder().encode(signupDto.getPassword());
         int effectedRow = userRepository.addUser(id, signupDto.getName(), signupDto.getEmail(),
-                signupDto.getPassword());
+                hashedPassword);
+
         if (effectedRow != 1)
             throw new InternalServerException("Failed to access");
 
@@ -55,7 +56,8 @@ public class UserService {
             throws InvalidParameterException, InternalServerException {
         String dbPassword = userRepository.getUserPasswordByEmail(loginDto.getEmail());
 
-        if (!loginDto.getPassword().equals(dbPassword)) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(loginDto.getPassword(), dbPassword)) {
             throw new InvalidParameterException("invalid password.");
         }
 

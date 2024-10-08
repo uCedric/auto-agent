@@ -26,4 +26,7 @@ public class constants {
     public static final String USER_PASSWORD_LENGTH_INVALID = "user password length must be between 8 and 30.";
     public static final String PROMPT_CAN_NOT_EMPTY = "prompt can not be empty.";
     public static final String PROMPT_LENGTH_INVALID = "prompt length must be between 1 and 512.";
+
+    public static final int FILE_MAX_SIZE = 10 * 1024 * 1024;
+    public static final String FILE_CONTENT_TYPE = "text/plain";
 }

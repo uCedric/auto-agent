@@ -10,8 +10,8 @@ public class AsyncConfig {
     @Bean(name = "dbAsyncExecutor")
     public ThreadPoolTaskExecutor dbAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(5);
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(10);
         executor.setQueueCapacity(100);
         executor.setThreadNamePrefix("DbAsyncThread-");
         // executor.setRejectedExecutionHandler((r, executor1) -> log.warn("Task

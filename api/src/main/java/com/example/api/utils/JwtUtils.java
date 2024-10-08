@@ -1,23 +1,20 @@
 package com.example.api.utils;
 
+import com.example.api.utils.Exceptions.ForbiddenException;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
-
 import javax.crypto.SecretKey;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-
-import com.example.api.dtos.userDto;
-import com.example.api.utils.Exceptions.ForbiddenException;
+import java.util.UUID;
 
 @Component
 public class JwtUtils {
@@ -27,11 +24,9 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(userDto userDto) {
+    public String generateToken(UUID userUuid) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("name", userDto.getName());
-        claims.put("email", userDto.getEmail());
-        claims.put("role", "user");
+        claims.put("userUuid", userUuid.toString());
 
         return Jwts
                 .builder()

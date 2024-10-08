@@ -1,5 +1,6 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.checkstyle.configuration": "${workspaceFolder}\\api\\checkstyle.xml",
-    "java.checkstyle.version": "10.17.0"
+    "java.checkstyle.version": "10.17.0",
+    "java.compile.nullAnalysis.mode": "automatic"
 }

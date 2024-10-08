@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.concurrent.CompletableFuture;
-import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletResponse;
 import reactor.core.publisher.Flux;
 
 @RestController
@@ -31,19 +30,13 @@ public class PromptController {
 
     @PostMapping("/query")
     public CompletableFuture<Flux<String>> query(@RequestHeader("Authorization") String token,
-            @RequestBody promptDto prompt) throws Exception {
-        Claims tokenContent = authValidator.validateToken(token);
+            @RequestBody promptDto prompt, HttpServletResponse response) throws Exception {
+        authValidator.validateToken(token, response);
+
         bodyValidator.validate(prompt);
 
-        CompletableFuture<Flux<String>> result = promptService.query(prompt, tokenContent);
+        CompletableFuture<Flux<String>> result = promptService.query(prompt, response.getHeader("userUuid"));
 
         return result;
     }
-
-    @PostMapping("/history")
-    public String getHistory(@RequestBody String entity) {
-
-        return entity;
-    }
-
 }

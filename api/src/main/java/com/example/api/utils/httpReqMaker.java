@@ -32,7 +32,7 @@ public class httpReqMaker {
         this.httpHeader.set("Authorization", "Bearer " + token);
     }
 
-    public void setBody(String body) {// TODO: customized body structure
+    public void setBody(String body) {
         this.body = body;
     }
 

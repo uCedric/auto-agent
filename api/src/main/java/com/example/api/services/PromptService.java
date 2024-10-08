@@ -2,20 +2,16 @@ package com.example.api.services;
 
 import com.example.api.dtos.promptDto;
 import com.example.api.repository.PromptRepository;
-import com.example.api.repository.UserRepository;
 import com.example.api.services.external.llmService;
 
 import reactor.core.publisher.Flux;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import io.jsonwebtoken.Claims;
 
 @Service
 public class PromptService {
@@ -26,13 +22,10 @@ public class PromptService {
     @Autowired
     private PromptRepository promptRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     private final List<String> queryRes = new ArrayList<>();
 
     @Async("dbAsyncExecutor")
-    public CompletableFuture<Flux<String>> query(promptDto prompt, Claims tokenContent) {
+    public CompletableFuture<Flux<String>> query(promptDto prompt, String userUuid) {
         Flux<String> llmRes = llmService.query(prompt);
 
         llmRes
@@ -42,9 +35,9 @@ public class PromptService {
                 .doOnComplete(() -> {
                     String text = String.join("", queryRes);
                     UUID uuid = UUID.randomUUID();
-                    UUID userUuid = userRepository.getUuidByEmail(tokenContent.get("email", String.class));
+                    UUID userUuidFromString = UUID.fromString(userUuid);
 
-                    promptRepository.addPrompt(uuid, userUuid, text);
+                    promptRepository.addPrompt(uuid, userUuidFromString, text);
 
                     queryRes.clear();
                 }).subscribe();
