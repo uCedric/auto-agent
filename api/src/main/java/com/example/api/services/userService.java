@@ -4,12 +4,14 @@ import com.example.api.dtos.userDto;
 import com.example.api.repository.UserRepository;
 import com.example.api.utils.Exceptions.InternalServerException;
 import com.example.api.utils.Exceptions.InvalidParameterException;
+import com.example.api.dtos.Dto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -19,11 +21,13 @@ public class UserService {
     private UserRepository userRepository;
 
     @Async("dbAsyncExecutor")
-    public CompletableFuture<String> signup(userDto signupDto)
+    public CompletableFuture<String> signup(Dto signupDto)
             throws InvalidParameterException, InternalServerException {
+        System.out.println("get attributes" + signupDto);
+        Map<String, Object> signupAttributes = signupDto.getAttributes();
 
-        isEmailDuplicated(signupDto.getEmail());
-        addUser(signupDto);
+        isEmailDuplicated(signupAttributes.get("email").toString());
+        addUser(signupAttributes);
 
         return CompletableFuture.completedFuture(null);
     }
@@ -38,11 +42,12 @@ public class UserService {
         return true;
     }
 
-    public Boolean addUser(userDto signupDto) {
+    public Boolean addUser(Map<String, Object> signupAttributes) {
         UUID id = UUID.randomUUID();
 
-        String hashedPassword = new BCryptPasswordEncoder().encode(signupDto.getPassword());
-        int effectedRow = userRepository.addUser(id, signupDto.getName(), signupDto.getEmail(),
+        String hashedPassword = new BCryptPasswordEncoder().encode(signupAttributes.get("password").toString());
+        int effectedRow = userRepository.addUser(id, signupAttributes.get("name").toString(),
+                signupAttributes.get("email").toString(),
                 hashedPassword);
 
         if (effectedRow != 1)
@@ -52,12 +57,14 @@ public class UserService {
     }
 
     @Async("dbAsyncExecutor")
-    public CompletableFuture<String> login(userDto loginDto)
+    public CompletableFuture<String> login(Dto loginDto)
             throws InvalidParameterException, InternalServerException {
-        String dbPassword = userRepository.getUserPasswordByEmail(loginDto.getEmail());
+        Map<String, Object> loginAttributes = loginDto.getAttributes();
+
+        String dbPassword = userRepository.getUserPasswordByEmail(loginAttributes.get("email").toString());
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if (!passwordEncoder.matches(loginDto.getPassword(), dbPassword)) {
+        if (!passwordEncoder.matches(loginAttributes.get("password").toString(), dbPassword)) {
             throw new InvalidParameterException("invalid password.");
         }
 

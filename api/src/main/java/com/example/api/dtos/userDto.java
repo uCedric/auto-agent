@@ -6,8 +6,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import java.util.HashMap;
+import java.util.Map;
 
-public class userDto {
+public class userDto extends Dto {
     @NotEmpty(message = constants.USER_EMAIL_CAN_NOT_EMPTY)
     @NotBlank(message = constants.USER_EMAIL_CAN_NOT_CONTAIN_BLANK)
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = constants.USER_EMAIL_INVALID_FORMATE)
@@ -41,5 +43,13 @@ public class userDto {
 
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("email", this.email);
+        attributes.put("password", this.password);
+        return attributes;
     }
 }
