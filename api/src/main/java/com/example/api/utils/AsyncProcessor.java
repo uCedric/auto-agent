@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Async;
 public class AsyncProcessor<T, R> {
     private List<Function<T, CompletableFuture<R>>> services = new ArrayList<>();
 
-    private T dto;
+    private Map<String, T> dtoMap = new HashMap<>();
 
     public static <T, R> AsyncProcessor<T, R> init() {
         AsyncProcessor<T, R> asyncProcessor = new AsyncProcessor<>();
@@ -21,18 +21,19 @@ public class AsyncProcessor<T, R> {
 
     public AsyncProcessor<T, R> addTask(Function<T, CompletableFuture<R>> service, T dto) {
         this.services.add(service);
-        this.dto = dto;
+        this.dtoMap.put("task" + String.valueOf(this.services.size()), dto);
+
         return this;
     }
 
     @Async("AsyncProcessorExecutor")
     public CompletableFuture<Map<String, R>> process() throws InterruptedException, ExecutionException {
-        // List<R> results = new ArrayList<>();
         Map<String, R> results = new HashMap<>();
         int order = 1;
 
         for (Function<T, CompletableFuture<R>> service : services) {
-            CompletableFuture<R> taskResult = service.apply(dto);
+            System.out.println(this.dtoMap.get("task1"));
+            CompletableFuture<R> taskResult = service.apply(this.dtoMap.get("task" + order));
             R result = taskResult.get();
 
             results.put("task" + order, result);
