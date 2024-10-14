@@ -8,6 +8,7 @@ class llm{
     constructor(model) {
         this.ollamaInstance = ollama;
         this.model = model;
+        
         console.log('llm instance is created');
     }
 
@@ -16,7 +17,7 @@ class llm{
 
         const result = await this.ollamaInstance.chat({model: this.model, messages: [message], stream: true});
 
-        for await (const part of result) {
+        for await (const part of result) {      
             yield part.message.content;
         }
     }

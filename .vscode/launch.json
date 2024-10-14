@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ApiApplication",
+            "request": "launch",
+            "mainClass": "com.hades.api.ApiApplication",
+            "projectName": "api"
+        },
+        {
+            "type": "java",
             "name": "test",
             "request": "launch",
             "mainClass": "com.example.api.test",
