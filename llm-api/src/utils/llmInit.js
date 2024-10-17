@@ -1,5 +1,6 @@
 import ollama from 'ollama';
 import axios from 'axios';
+import promptTemplate from './promptTemplate.js';
 
 class llm{
     ollamaInstance;
@@ -13,7 +14,7 @@ class llm{
     }
 
     async *inference({prompt}){
-        const message  = {role: 'user', content: prompt};
+        const message  = {role: 'user', content: promptTemplate.infoConstruct + prompt};
 
         const result = await this.ollamaInstance.chat({model: this.model, messages: [message], stream: true});
 

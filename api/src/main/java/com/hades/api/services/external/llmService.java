@@ -12,6 +12,7 @@ import com.hades.api.utils.Exceptions.InternalServerException;
 import reactor.core.publisher.Flux;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.http.MediaType;
 
 @Service
 public class llmService {
@@ -22,14 +23,9 @@ public class llmService {
     public Flux<String> query(promptDto prompt) {
         WebClient webClient = webClientBuilder.build();
 
-        Flux<String> streamData = webClient.post().uri(constants.LLM_API_LOCAL_QUERY)
-                .bodyValue(prompt)
+        return webClient.post().uri(constants.LLM_API_LOCAL_QUERY).bodyValue(prompt)
                 .retrieve()
-                .bodyToFlux(String.class).map(data -> {
-                    return data + "\n";
-                });
-
-        return streamData;
+                .bodyToFlux(String.class);
     }
 
     public String addChunks(UUID documentUuid, List<String> chunks) {

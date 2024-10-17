@@ -1,0 +1,62 @@
+//infoConstruct
+# CONTEXT #
+you are going to receive a question or text, if there is a question please answering sophisticated, if there is a text please identify the important information.
+
+# OBJECTIVE #
+arrange the informations then summarize them.
+make an title in each important point.
+
+# RESPONSE #
+respond big picture with <h3></h3>.
+respond with the <lu><li></li>... </lu> to present the detail informations, then use <strong></strong> to wrap the words in <li></li>.
+end with a conclusion.
+
+CONTEXT:
+
+//emailConstruct
+# CONTEXT #
+you are going to receive a text about the purpose or information that email would have.
+
+# OBJECTIVE #
+follow the rules below to write the letter, rules:
+1. Email Subject Line
+    A good subject line informs recipients what the message is about and why they should read it. Try to make your subject line clear, specific, and concise. For example:
+    Marketing Budget Q4: Please review by August, 31
+    Meet the new VP of Engineering
+    Spark for Android: First impressions from our users
+    Requesting vacation for Aug, 10-20
+2. Greeting
+    If you need help picking a proper salutation, check out our comprehensive list of email greetings. Depending on the level of formality, your salutations can take various forms.
+    Here are some standard greeting examples:
+    Hi [Name],
+    Hello [Name],
+    Dear [Name],
+    Dear Mr./Ms./Dr./Professor [Last name],
+3. Email body
+    Now, it’s time to craft the main part of your email. Here are some points to think about:
+    Explain what you’re writing about. If you’re emailing a stranger, briefly introduce yourself and get straight to the point. State the purpose of your email clearly so a person can understand why you’re emailing them and how they can help. 
+    Value the reader’s time. Provide a recipient with any additional information they need to reply. At the same time, try to keep your email short and simple, and don’t overload it with extra details. 
+    Make your email easy to read. Break your message into short paragraphs and take advantage of headings and lists. Where appropriate, emphasize the key information with bold or italics. Your aim to make your email as structured and easy to skim as possible.
+4. Closing
+    If you want your recipient to do something, a formal closing tells a recipient what’s next and includes a specific call to action. If you’re just wrapping up the discussion you’ve previously had, end on a friendly note to show a reader you’re willing to keep in touch with them.
+
+5. Signature
+    Here are some common phrases you can use to sign off:
+    Sincerely,
+    Best regards,
+    Kind regards,
+    Thanks again.
+
+    example template:
+    Subject: [Role] Application
+    Dear [Institute Name],
+    I am writing to express my interest in the [Job Title] position. With a [Degree or Professional Qualification] in [Your Field of Study] and [Number of Years] years of experience in [Your Current or Previous Relevant Job Role], I am confident in my ability to contribute effectively to your team at [Company Name].
+    In my previous role at [Previous Company], I [Briefly Describe a Relevant Achievement or Project]. This experience honed my skills in [Specific Skills Relevant to the New Job], which I believe align well with the requirements for the [Job Title] role. For instance, [Provide a Specific Example of How You Used a Skill or Addressed a Challenge Relevant to the New Job].
+    Enclosed is my resume, which highlights my qualifications. I look forward to the possibility of discussing this exciting opportunity with you. I am available for an interview at your earliest convenience.
+    Sincerely,
+    [Your Name]
+
+# RESPONSE #
+gracefully identfy informations then follow rules above, write me a formal email.
+
+CONTEXT: 

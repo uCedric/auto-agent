@@ -20,7 +20,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Async("dbAsyncExecutor")
+    @Async("TaskThread")
     public CompletableFuture<String> signup(Dto signupDto)
             throws InvalidParameterException, InternalServerException {
         System.out.println("get attributes" + signupDto);
@@ -56,9 +56,11 @@ public class UserService {
         return true;
     }
 
-    @Async("dbAsyncExecutor")
+    @Async("TaskThread")
     public CompletableFuture<String> login(Dto loginDto)
             throws InvalidParameterException, InternalServerException {
+        Thread currentThread = Thread.currentThread();
+        System.out.println("service thread name: " + currentThread.getName());
         Map<String, Object> loginAttributes = loginDto.getAttributes();
 
         String dbPassword = userRepository.getUserPasswordByEmail(loginAttributes.get("email").toString());

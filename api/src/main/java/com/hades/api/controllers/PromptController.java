@@ -30,7 +30,7 @@ public class PromptController {
     private BodyValidator bodyValidator;
 
     @PostMapping("/query")
-    public CompletableFuture<Flux<String>> query(@RequestHeader("Authorization") String token,
+    public Flux<String> query(@RequestHeader("Authorization") String token,
             @RequestBody promptDto prompt, HttpServletResponse response) throws Exception {
         authValidator.validateToken(token, response);
 
@@ -38,6 +38,6 @@ public class PromptController {
 
         CompletableFuture<Flux<String>> result = promptService.query(prompt, response.getHeader("userUuid"));
 
-        return result;
+        return result.get();
     }
 }

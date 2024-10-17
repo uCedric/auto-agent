@@ -16,6 +16,8 @@ import com.hades.api.services.external.llmService;
 import com.hades.api.utils.dataFormate;
 import com.hades.api.utils.Exceptions.InvalidParameterException;
 
+import jakarta.transaction.Transactional;
+
 import java.util.UUID;
 
 @Service
@@ -30,7 +32,8 @@ public class DocumentService {
     @Autowired
     private DocumentRepository documentRepository;
 
-    @Async("dbAsyncExecutor")
+    @Async("TaskThread")
+    @Transactional
     public CompletableFuture<String> addDocuments(String userUuid, MultipartFile[] files) {
         for (MultipartFile file : files) {
             try {

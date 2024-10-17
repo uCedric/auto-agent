@@ -25,11 +25,16 @@ public class PromptService {
 
     private final List<String> queryRes = new ArrayList<>();
 
-    @Async("dbAsyncExecutor")
+    @Async("TaskThread")
     public CompletableFuture<Flux<String>> query(promptDto prompt, String userUuid) {
-        Flux<String> llmRes = llmService.query(prompt);
+        String threadName = Thread.currentThread().getName();
+        System.out.println("Thread name: " + threadName);
+        Flux<String> result = llmService.query(prompt).share();
 
-        llmRes
+        result
+                .map(data -> {
+                    return data + "\n";
+                })
                 .doOnNext(data -> {
                     queryRes.add(data);
                 })
@@ -43,6 +48,7 @@ public class PromptService {
                     queryRes.clear();
                 }).subscribe();
 
-        return CompletableFuture.completedFuture(llmRes);
+        return CompletableFuture.completedFuture(result);
+
     }
 }

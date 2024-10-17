@@ -1,6 +1,7 @@
 package com.hades.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.hades.api.dtos.Dto;
@@ -20,6 +21,7 @@ public class AuthService {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Async("TaskThread")
     public CompletableFuture<String> userSignupToken(Dto dto) {
         Map<String, Object> dtoAttributes = dto.getAttributes();
 
