@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.hades.api.utils.JwtUtils;
 import com.hades.api.utils.Exceptions.ForbiddenException;
+import com.hades.api.utils.Exceptions.UnauthorizedException;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,9 +18,9 @@ public class AuthValidator {
 
     public void validateToken(String token, HttpServletResponse response) {
         if (isTokenEmpty(token))
-            throw new ForbiddenException("Token is empty");
+            throw new UnauthorizedException("Token is empty");
         if (isTokenNotInJwtFormate(token))
-            throw new ForbiddenException("Token is not in JWT format");
+            throw new UnauthorizedException("Token is not in JWT format");
         Claims tokenContent = isTokenInvalid(token.split(" ")[1]);
 
         response.setHeader("userUuid", tokenContent.get("userUuid", String.class));

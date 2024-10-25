@@ -6,7 +6,10 @@ const embedChunks = async (documentUuid, chunks) => {
 
     let embededObjects = [];
     for(let chunk of chunks){
-        const vector = await embedInstance.embedToVector(chunk);
+        if(!chunk)continue;
+        
+        const vector =  await embedInstance.embedToVector(chunk);
+
         embededObjects = [...embededObjects, {vector: vector.embedding, chunk}];
     }
     
@@ -14,7 +17,7 @@ const embedChunks = async (documentUuid, chunks) => {
         await chunkModel.addChunk(documentUuid, object.vector, object.chunk);
     }
     
-    return embededObjects;
+    return embededObjects; 
 };
 
 export default { embedChunks };

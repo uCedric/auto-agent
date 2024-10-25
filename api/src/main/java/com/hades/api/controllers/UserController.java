@@ -33,7 +33,7 @@ public class UserController {
         private AuthService authService;
 
         @Autowired
-        private AsyncExecutor asyncExecutor;
+        private AsyncExecutor<Dto, String> asyncExecutor = AsyncExecutor.<Dto, String>init();
 
         @PostMapping("/signup")
         public SuccessResponse<Map<String, String>> signup(@RequestBody signupDto signupDto)
@@ -55,8 +55,6 @@ public class UserController {
         @PostMapping("/login")
         public SuccessResponse<Map<String, String>> login(@RequestBody loginDto loginDto)
                         throws InterruptedException, ExecutionException {
-                Thread currentThread = Thread.currentThread();
-                System.out.println("controller thread name: " + currentThread.getName());
                 bodyValidator.validate(loginDto);
 
                 AsyncService<Dto, String> asyncServices = AsyncService.<Dto, String>init()
@@ -65,11 +63,12 @@ public class UserController {
 
                 Map<String, String> asyncResults = asyncExecutor.process(asyncServices).get();
 
+                String userUuid = asyncResults.get("task1");
                 String result = asyncResults.get("task2");
 
                 SuccessResponse<Map<String, String>> response = new SuccessResponse<>(200,
                                 "User signed up successfully",
-                                new tokenDto(result).getToken());
+                                new tokenDto(result, userUuid).getToken());
 
                 return response;
         }

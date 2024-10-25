@@ -17,6 +17,9 @@ public class documentEntity {
     @Column(name = "user_uuid", nullable = false)
     private UUID user_uuid;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "s3_path", nullable = false)
     private String s3_path;
 

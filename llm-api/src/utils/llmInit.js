@@ -13,10 +13,11 @@ class llm{
         console.log('llm instance is created');
     }
 
-    async *inference({prompt}){
-        const message  = {role: 'user', content: promptTemplate.infoConstruct + prompt};
+    async *inference({prompt, relatedInfos = null}){
+        const message  = {role: 'user', content: prompt};
+        const history = relatedInfo ? {role: 'assistant', content: relatedInfos} : [];
 
-        const result = await this.ollamaInstance.chat({model: this.model, messages: [message], stream: true});
+        const result = await this.ollamaInstance.chat({model: this.model, messages: [...history, message], stream: true});
 
         for await (const part of result) {      
             yield part.message.content;

@@ -8,7 +8,7 @@ const promptQuery = async (req, res) => {
         'Transfer-Encoding': 'chunked',
     });
 
-    const promptRes = promptService.promptQuery({prompt, res});
+    const promptRes = promptService.promptQuery({prompt});
 
     try {
         for await (const part of promptRes) {
@@ -23,4 +23,23 @@ const promptQuery = async (req, res) => {
     }
 };
 
-export default { promptQuery };
+const promptQueryWithRelatedInfo = async (req, res) => {
+    const { content: prompt } = req.body;
+    const relatedInfos = res.locals.relatedInfo;
+
+    const promptRes = promptService.promptQuery({prompt, relatedInfos});
+    
+    try {
+        for await (const part of promptRes) {
+            res.write(part);
+        }
+    } catch (error) {
+        console.error('Error during streaming:', error);
+        res.writeHead(500);
+        res.end('Internal Server Error');
+    }finally{
+        res.end();
+    }
+};
+
+export default { promptQuery, promptQueryWithRelatedInfo };

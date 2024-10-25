@@ -27,8 +27,7 @@ public class PromptService {
 
     @Async("TaskThread")
     public CompletableFuture<Flux<String>> query(promptDto prompt, String userUuid) {
-        String threadName = Thread.currentThread().getName();
-        System.out.println("Thread name: " + threadName);
+
         Flux<String> result = llmService.query(prompt).share();
 
         result

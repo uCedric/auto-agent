@@ -73,7 +73,7 @@ public class BodyValidator {
                 fileContent += line;
             }
         } catch (Exception e) {
-            throw new InvalidParameterException("could not read file");
+            throw new InvalidParameterException("reading file content failed");
         }
 
         if (fileContent.contains("<script>"))
