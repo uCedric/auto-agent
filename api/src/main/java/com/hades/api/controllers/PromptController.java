@@ -40,4 +40,17 @@ public class PromptController {
 
         return result.get();
     }
+
+    @PostMapping("/queryWithRelatedInfo")
+    public Flux<String> queryWithRelatedInfo(@RequestHeader("Authorization") String token,
+            @RequestBody promptDto prompt, HttpServletResponse response) throws Exception {
+        authValidator.validateToken(token, response);
+
+        bodyValidator.validate(prompt);
+
+        CompletableFuture<Flux<String>> result = promptService.query(prompt, response.getHeader("userUuid"));
+
+        return result.get();
+    }
+
 }

@@ -1,7 +1,5 @@
 package com.hades.api.utils;
 
-import com.hades.api.dtos.Dto;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,23 +10,26 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AsyncExecutor {
+public class AsyncExecutor<T, R> {
+    public static <T, R> AsyncExecutor<T, R> init() {
+        return new AsyncExecutor<>();
+    }
 
     @Async("AsyncExecutor")
-    public CompletableFuture<Map<String, String>> process(AsyncService<Dto, String> tasks)
+    public CompletableFuture<Map<String, R>> process(AsyncService<T, R> tasks)
             throws InterruptedException, ExecutionException {
         Thread currentThread = Thread.currentThread();
         System.out.println("executor thread name: " + currentThread.getName());
-        List<Function<Dto, CompletableFuture<String>>> services = tasks.getServices();
-        Map<String, Dto> dtoMap = tasks.getDtoMap();
+        List<Function<T, CompletableFuture<R>>> services = tasks.getServices();
+        Map<String, T> dtoMap = tasks.getDtoMap();
 
-        Map<String, String> results = new HashMap<>();
+        Map<String, R> results = new HashMap<>();
         int order = 1;
 
-        for (Function<Dto, CompletableFuture<String>> service : services) {
+        for (Function<T, CompletableFuture<R>> service : services) {
             System.out.println(dtoMap.get("task1"));
-            CompletableFuture<String> taskResult = service.apply(dtoMap.get("task" + order));
-            String result = taskResult.get();
+            CompletableFuture<R> taskResult = service.apply(dtoMap.get("task" + order));
+            R result = taskResult.get();
 
             results.put("task" + order, result);
 

@@ -10,22 +10,29 @@ import com.hades.api.utils.Exceptions.ExternalServerException;
 import com.hades.api.utils.Exceptions.ForbiddenException;
 import com.hades.api.utils.Exceptions.InternalServerException;
 import com.hades.api.utils.Exceptions.InvalidParameterException;
+import com.hades.api.utils.Exceptions.UnauthorizedException;
 
 @ControllerAdvice
 public class ExceptionHandlers {
-
-    @ExceptionHandler(ExternalServerException.class)
-    public ResponseEntity<ErrorResponse> handleExternalServerException(ExternalServerException error) {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), error.getMessage());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-    }
-
     @ExceptionHandler(InvalidParameterException.class)
     public ResponseEntity<ErrorResponse> handleDataFormateException(InvalidParameterException error) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), error.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(UnauthorizedException error) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), error.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> handleForbidenException(ForbiddenException error) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), error.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
 
     @ExceptionHandler(InternalServerException.class)
@@ -35,11 +42,11 @@ public class ExceptionHandlers {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ErrorResponse> handleForbidenException(ForbiddenException error) {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), error.getMessage());
+    @ExceptionHandler(ExternalServerException.class)
+    public ResponseEntity<ErrorResponse> handleExternalServerException(ExternalServerException error) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), error.getMessage());
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
     @ExceptionHandler(ExecutionException.class)

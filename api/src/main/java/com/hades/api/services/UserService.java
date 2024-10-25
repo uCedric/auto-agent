@@ -59,17 +59,18 @@ public class UserService {
     @Async("TaskThread")
     public CompletableFuture<String> login(Dto loginDto)
             throws InvalidParameterException, InternalServerException {
-        Thread currentThread = Thread.currentThread();
-        System.out.println("service thread name: " + currentThread.getName());
+
         Map<String, Object> loginAttributes = loginDto.getAttributes();
 
         String dbPassword = userRepository.getUserPasswordByEmail(loginAttributes.get("email").toString());
+
+        UUID userUuid = userRepository.getUuidByEmail(loginAttributes.get("email").toString());
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!passwordEncoder.matches(loginAttributes.get("password").toString(), dbPassword)) {
             throw new InvalidParameterException("invalid password.");
         }
 
-        return CompletableFuture.completedFuture(null);
+        return CompletableFuture.completedFuture(userUuid.toString());
     }
 }

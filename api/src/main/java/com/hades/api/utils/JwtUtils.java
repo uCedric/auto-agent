@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.hades.api.utils.Exceptions.ForbiddenException;
+import com.hades.api.utils.Exceptions.UnauthorizedException;
 
 import java.security.Key;
 import java.util.Date;
@@ -57,7 +58,7 @@ public class JwtUtils {
             return claims;
 
         } catch (Exception e) {
-            throw new ForbiddenException("Token is invalid");
+            throw new UnauthorizedException("Token is invalid");
         }
 
     }
